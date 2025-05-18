@@ -2,18 +2,12 @@ import os
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from mcp.server.fastmcp import FastMCP
-from dotenv import load_dotenv
+from langchain_openai import OpenAIEmbeddings
 from typing import List, Dict, Any, Optional
+from langchain.schema import Document
 from langchain.prompts import PromptTemplate
 from langchain.schema.output_parser import StrOutputParser
-from langchain.schema import Document
 from langchain.schema.runnable import Runnable
-
-
-# API 키 정보 로드
-load_dotenv(override=True)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -25,7 +19,7 @@ class RAGChain:
         self.embeddings = embeddings or OpenAIEmbeddings(model="text-embedding-ada-002",
                                                          openai_api_key=OPENAI_API_KEY)
 
-    def create_retriever(self, markdown_text: str):
+    async def create_retriever(self, markdown_text: str):
         """Markdown 텍스트 → Retriever 생성"""
         doc = Document(page_content=markdown_text)
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000,
@@ -84,41 +78,3 @@ class RAGChain:
             response = f"⚠️ 오류 발생: {str(e)}"
 
         return response
-    
-# Initialize FastMCP server with configuration
-mcp = FastMCP("markdown_rag_KR")
-
-# RAG 실행 함수
-@mcp.tool()
-async def run_rag(question: str,
-                  context: str,
-                  history: Optional[str]):
-    # LLM과 Embeddings 설정
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002",
-                                  openai_api_key=OPENAI_API_KEY)
-    llm = ChatOpenAI(model="gpt-4o-mini",
-                     temperature=0.5,
-                     openai_api_key=OPENAI_API_KEY)
-
-    # RAGChain 생성
-    rag_chain = RAGChain(llm=llm,
-                         embeddings=embeddings)
-
-    # 문서 검색기 생성
-    retriever = rag_chain.create_retriever(context)
-
-    # RAG 실행
-    response = rag_chain.invoke({
-        "question": question,
-        "context": retriever.get_relevant_documents(question),
-        "chat_history": history
-    })
-    
-    return response
-
-def main():
-    mcp.run()
-
-
-if __name__ == "__main__":
-    main()

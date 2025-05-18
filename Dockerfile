@@ -25,8 +25,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh -o install_uv.sh && \
 # 작업 디렉토리 설정 (변경 요소)
 WORKDIR /app
 
-COPY md_rag_tool.py /app/
-COPY pyproject.toml /app/
+COPY . /app
 
 # 컨테이너 실행 시 사용할 명령어 지정
-CMD ["uv run md_rag_tool.py"]
+CMD ["uv run src/server.py"]
