@@ -22,10 +22,16 @@ RUN curl -LsSf https://astral.sh/uv/install.sh -o install_uv.sh && \
     ./install_uv.sh && \
     rm install_uv.sh
 
+    
 # 작업 디렉토리 설정 (변경 요소)
 WORKDIR /app
 
 COPY . /app
 
+RUN python -c "import tomllib; deps = tomllib.load(open('pyproject.toml', 'rb'))['project']['dependencies']; print('\n'.join(deps))" > requirements.txt
+
+# Install dependencies using pip from the requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 # 컨테이너 실행 시 사용할 명령어 지정
-CMD ["uv run src/server.py"]
+CMD ["python3", "src/server.py"]

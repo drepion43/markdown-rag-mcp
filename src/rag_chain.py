@@ -4,10 +4,14 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from typing import List, Dict, Any, Optional
+from dotenv import load_dotenv
 from langchain.schema import Document
 from langchain.prompts import PromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import Runnable
+
+# API 키 정보 로드
+load_dotenv(override=True)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 

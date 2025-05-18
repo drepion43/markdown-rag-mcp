@@ -2,15 +2,18 @@ startCommand:
   type: stdio
   configSchema:
     type: object
-    required: []
-    properties: {}
-    description: Korean MarDown RAG
+    required:
+      - apiSecretKey
+    properties:
+      apiSecretKey:
+        type: string
+        description: "OPEN API secret key for MarkDown RAG."
   commandFunction: |
     (config) => ({
-      command: "uv",
-      args: ["run", "src/server.py"],
+      command: "python3",
+      args: ["src/server.py"],
       env: {
-        OPENAI_API_KEY: config.OPENAI_API_KEY
+        OPEN_API_KEY: config.apiSecretKey
       },
     })
   exampleConfig:

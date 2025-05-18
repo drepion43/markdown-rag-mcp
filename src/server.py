@@ -6,6 +6,10 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from mcp.server.fastmcp import FastMCP
 from typing import List, Dict, Any, Optional
 from rag_chain import RAGChain
+from dotenv import load_dotenv
+
+# API 키 정보 로드
+load_dotenv(override=True)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
