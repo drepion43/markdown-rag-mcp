@@ -12,6 +12,25 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # Initialize FastMCP server with configuration
 mcp = FastMCP("markdown_rag_KR")
 
+@mcp.tool()
+async def get_weather(location: str) -> str:
+    """
+    Get current weather information for the specified location.
+
+    This function simulates a weather service by returning a fixed response.
+    In a production environment, this would connect to a real weather API.
+
+    Args:
+        location (str): The name of the location (city, region, etc.) to get weather for
+
+    Returns:
+        str: A string containing the weather information for the specified location
+    """
+    # Return a mock weather response
+    # In a real implementation, this would call a weather API
+    return f"It's always Sunny in {location}"
+
+
 # RAG 실행 함수
 @mcp.tool()
 async def run_rag(question: str,
@@ -32,11 +51,12 @@ async def run_rag(question: str,
 
     # 문서 검색기 생성
     retriever = await rag_chain.create_retriever(context)
+    relevant_docs = await retriever.get_relevant_documents(question)
 
     # RAG 실행
     response = await rag_chain.invoke({
         "question": question,
-        "context": retriever.get_relevant_documents(question),
+        "context": relevant_docs,
         "chat_history": history
     })
     

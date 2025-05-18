@@ -8,12 +8,14 @@ startCommand:
       OPENAI_API_KEY:
         type: string
         description: "OPEN API KEY is necessary for Korean MarkDown RAG."
-    description: No configuration required.
+    description: Korean MarDown RAG
   commandFunction: |
     (config) => ({
       command: "uv",
-      args: ["run", "md_rag_tool.py"],
-      env: {OPENAI_API_KEY: config.OPENAI_API_KEY},
+      args: ["run", "src/server.py"],
+      env: {
+        OPENAI_API_KEY: config.OPENAI_API_KEY
+      },
     })
   exampleConfig:
     apiSecretKey: YOUR_API_KEY_HERE
