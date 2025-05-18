@@ -7,7 +7,7 @@ startCommand:
     properties:
       apiSecretKey:
         type: string
-        description: "OPEN API secret key for MarkDown RAG."
+        description: "OPENAI API secret key for MarkDown RAG."
   commandFunction: |
     (config) => ({
       command: "python3",

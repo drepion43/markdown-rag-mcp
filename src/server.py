@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 # API 키 정보 로드
 load_dotenv(override=True)
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", timeout=300)
 
 # Initialize FastMCP server with configuration
 mcp = FastMCP("markdown_rag_KR")
