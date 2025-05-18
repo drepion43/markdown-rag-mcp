@@ -80,12 +80,7 @@ class RAGChain:
         return response
     
 # Initialize FastMCP server with configuration
-mcp = FastMCP(
-    "Retriever",
-    instructions="A Retriever that can retrieve information from the database.",
-    host="0.0.0.0",
-    port=8005,
-)
+mcp = FastMCP("markdown_rag_KR")
 
 # RAG 실행 함수
 @mcp.tool()

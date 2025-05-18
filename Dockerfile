@@ -29,4 +29,4 @@ COPY md_rag_tool.py /app/
 COPY pyproject.toml /app/
 
 # 컨테이너 실행 시 사용할 명령어 지정
-CMD ["/bin/bash"]
+CMD ["uv run md_rag_tool.py"]
