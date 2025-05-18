@@ -1,3 +1,5 @@
+import os
+
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
@@ -13,17 +15,21 @@ from langchain.schema.runnable import Runnable
 # API 키 정보 로드
 load_dotenv(override=True)
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
 class RAGChain:
     def __init__(self,
                  llm: object,
                  embeddings: Optional[object] = None):
         self.llm = llm
-        self.embeddings = embeddings or OpenAIEmbeddings(model="text-embedding-ada-002")
+        self.embeddings = embeddings or OpenAIEmbeddings(model="text-embedding-ada-002",
+                                                         openai_api_key=OPENAI_API_KEY)
 
     def create_retriever(self, markdown_text: str):
         """Markdown 텍스트 → Retriever 생성"""
         doc = Document(page_content=markdown_text)
-        splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=1000,
+                                                  chunk_overlap=100)
         split_docs = splitter.split_documents([doc])
         vector = FAISS.from_documents(split_docs, self.embeddings)
         return vector.as_retriever()
@@ -88,11 +94,15 @@ async def run_rag(question: str,
                   context: str,
                   history: Optional[str]):
     # LLM과 Embeddings 설정
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.5)
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002",
+                                  openai_api_key=OPENAI_API_KEY)
+    llm = ChatOpenAI(model="gpt-4o-mini",
+                     temperature=0.5,
+                     openai_api_key=OPENAI_API_KEY)
 
     # RAGChain 생성
-    rag_chain = RAGChain(llm=llm, embeddings=embeddings)
+    rag_chain = RAGChain(llm=llm,
+                         embeddings=embeddings)
 
     # 문서 검색기 생성
     retriever = rag_chain.create_retriever(context)
@@ -106,6 +116,9 @@ async def run_rag(question: str,
     
     return response
 
+def main():
+    mcp.run()
+
+
 if __name__ == "__main__":
-    # Run the MCP server with stdio transport for integration with MCP clients
-    mcp.run(transport="stdio")
+    main()
