@@ -23,38 +23,39 @@ async def get_weather(location: str) -> str:
     return f"It's always Sunny in {location}"
 
 
-# # RAG 실행 함수
-# @mcp.tool()
-# async def run_rag(question: str,
-#                   context: str,
-#                   history: Optional[str]):
-#     # LLM과 Embeddings 설정
-#     print("🛠️ run_rag tool invoked")
+# RAG 실행 함수
+@mcp.tool()
+async def run_rag(question: str,
+                  context: str,
+                  history: Optional[str]):
+    # LLM과 Embeddings 설정
+    print("🛠️ run_rag tool invoked")
 
-#     embeddings = OpenAIEmbeddings(model="text-embedding-ada-002",
-#                                   openai_api_key=OPENAI_API_KEY)
-#     llm = ChatOpenAI(model="gpt-4o-mini",
-#                      temperature=0.5,
-#                      openai_api_key=OPENAI_API_KEY)
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002",
+                                  openai_api_key=OPENAI_API_KEY)
+    llm = ChatOpenAI(model="gpt-4o-mini",
+                     temperature=0.5,
+                     openai_api_key=OPENAI_API_KEY)
 
-#     # RAGChain 생성
-#     rag_chain = RAGChain(llm=llm,
-#                          embeddings=embeddings)
+    # RAGChain 생성
+    rag_chain = RAGChain(llm=llm,
+                         embeddings=embeddings)
 
-#     # 문서 검색기 생성
-#     retriever = await rag_chain.create_retriever(context)
-#     relevant_docs = await retriever.get_relevant_documents(question)
+    # 문서 검색기 생성
+    retriever = await rag_chain.create_retriever(context)
+    relevant_docs = await retriever.get_relevant_documents(question)
 
-#     # RAG 실행
-#     response = await rag_chain.invoke({
-#         "question": question,
-#         "context": relevant_docs,
-#         "chat_history": history
-#     })
+    # RAG 실행
+    response = await rag_chain.invoke({
+        "question": question,
+        "context": relevant_docs,
+        "chat_history": history
+    })
     
-#     return response
+    return response
 
 def main():
+    print("Registered tools:", mcp.list_tools())  # 서버 시작 전 등록된 툴 확인
     mcp.run(transport="stdio")
 
 if __name__ == "__main__":

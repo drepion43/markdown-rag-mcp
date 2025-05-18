@@ -26,8 +26,8 @@ class RAGChain:
     async def create_retriever(self, markdown_text: str):
         """Markdown 텍스트 → Retriever 생성"""
         doc = Document(page_content=markdown_text)
-        splitter = RecursiveCharacterTextSplitter(chunk_size=1000,
-                                                  chunk_overlap=100)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=500,
+                                                  chunk_overlap=50)
         split_docs = splitter.split_documents([doc])
         vector = FAISS.from_documents(split_docs, self.embeddings)
         return vector.as_retriever()
