@@ -10,8 +10,8 @@ startCommand:
         description: "OPENAI API secret key for MarkDown RAG."
   commandFunction: |
     (config) => ({
-      command: "python3",
-      args: ["src/server.py"],
+      command: "uv",
+      args: ["run", "src/server.py"],
       env: {
         OPENAI_API_KEY: config.apiSecretKey
       },

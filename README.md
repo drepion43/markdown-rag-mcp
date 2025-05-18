@@ -1,5 +1,5 @@
 # uv init
-uv init   
+uv init --python=3.12
 uv add -r requirements.txt   
 uv lock
 
