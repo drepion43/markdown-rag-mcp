@@ -13,7 +13,7 @@ startCommand:
     (config) => ({
       command: "uv",
       args: ["run", "md_rag_tool.py"],
-      env: {OPENAI_API_KEY: config.openapikey},
+      env: {OPENAI_API_KEY: config.OPENAI_API_KEY},
     })
   exampleConfig:
     apiSecretKey: YOUR_API_KEY_HERE
