@@ -14,18 +14,6 @@ mcp = FastMCP("markdown_rag_KR")
 
 @mcp.tool()
 async def get_weather(location: str) -> str:
-    """
-    Get current weather information for the specified location.
-
-    This function simulates a weather service by returning a fixed response.
-    In a production environment, this would connect to a real weather API.
-
-    Args:
-        location (str): The name of the location (city, region, etc.) to get weather for
-
-    Returns:
-        str: A string containing the weather information for the specified location
-    """
     # Return a mock weather response
     # In a real implementation, this would call a weather API
     return f"It's always Sunny in {location}"
@@ -63,8 +51,7 @@ async def run_rag(question: str,
     return response
 
 def main():
-    mcp.run()
-
+    mcp.run(transport="stdio")
 
 if __name__ == "__main__":
     main()

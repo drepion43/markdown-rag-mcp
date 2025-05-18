@@ -2,12 +2,8 @@ startCommand:
   type: stdio
   configSchema:
     type: object
-    required: 
-    - OPENAI_API_KEY 
-    properties:
-      OPENAI_API_KEY:
-        type: string
-        description: "OPEN API KEY is necessary for Korean MarkDown RAG."
+    required: []
+    properties: {}
     description: Korean MarDown RAG
   commandFunction: |
     (config) => ({
