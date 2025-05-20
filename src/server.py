@@ -28,7 +28,7 @@ def async_timeout(seconds):
     return decorator
 
 # FastMCP 서버 초기화
-mcp = FastMCP("markdown_rag_KR", timeout=300, lazy_init=True)  # 타임아웃 옵션 추가 가능 여부 확인 필요
+mcp = FastMCP("markdown_rag_KR", timeout=300)  # 타임아웃 옵션 추가 가능 여부 확인 필요
 
 @mcp.tool()
 async def get_weather(location: str) -> str:
@@ -37,7 +37,9 @@ async def get_weather(location: str) -> str:
 
 @mcp.tool()
 @async_timeout(60)  # 60초 타임아웃
-async def run_rag(question: str, context: str, history: Optional[str]):
+async def run_rag(question: str,
+                  context: str,
+                  history: Optional[str]):
     logger.info(f"run_rag invoked with question: {question}")
     
     # API 키 로드 (툴 실행 시에만)
